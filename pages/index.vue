@@ -52,7 +52,7 @@ function swap() {
         <img src="/img/icons/star.svg" alt="⭐" width="20" />
         <input
           id="stars"
-          type="number"
+          type="string"
           v-model="stars"
           placeholder="Enter amount from 500 to 10,000"
           class="input"
