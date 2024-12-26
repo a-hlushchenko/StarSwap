@@ -1,0 +1,30 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@lottiefiles/dotlottie-vue": "^0.4.16",
+    "@lottiefiles/lottie-player": "^2.0.4",
+    "@nuxt/fonts": "^0.10.3",
+    "@nuxt/image": "^1.8.1",
+    "@pinia/nuxt": "^0.9.0",
+    "@ton/core": "^0.59.0",
+    "@tonconnect/ui": "^2.0.6",
+    "nuxt": "^3.15.0",
+    "pinia": "^2.3.0",
+    "swiper": "^11.1.14",
+    "vue": "latest",
+    "vue-router": "latest",
+    "vue-tg": "^0.4.0"
+  },
+  "overrides": {
+    "vue": "latest"
+  }
+}
