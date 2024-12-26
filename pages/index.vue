@@ -60,10 +60,13 @@ function swap() {
           max="10000"
           placeholder="Enter amount from 500 to 10,000"
           class="input"
+          enterkeyhint="done"
           @focusout="checkForm"
         />
       </div>
-      <p class="input-error" v-if="starsError">{{ starsError }}</p>
+      <Transition name="error">
+        <p class="input-error" v-if="starsError">{{ starsError }}</p>
+      </Transition>
     </div>
 
     <div class="divider"></div>
@@ -88,7 +91,6 @@ function swap() {
 .content {
   background-color: var(--secondary-bg);
   border-radius: 1rem;
-
   display: flex;
   flex-direction: column;
 }
@@ -96,12 +98,12 @@ function swap() {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding: 1rem;
 }
 
 .field-label {
-  padding-left: 0.75rem;
+  padding-left: 1rem;
   font-weight: 600;
 }
 
@@ -142,6 +144,14 @@ function swap() {
 }
 
 .input-error {
+  padding-left: 1rem;
   color: var(--error);
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.error-enter-from {
+  opacity: 0;
+  transform: translate(0.5rem, 0);
 }
 </style>
