@@ -58,6 +58,7 @@ function swap() {
           class="input"
           @focusout="checkForm"
           inputmode="numeric"
+          enterkeyhint="done"
         />
       </div>
 
