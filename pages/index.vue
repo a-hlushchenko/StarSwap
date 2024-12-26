@@ -73,7 +73,7 @@ function swap() {
       <div class="input-wrapper">
         <img src="/img/icons/usdt.svg" alt="⭐" width="20" />
         <div class="input" :class="{ disabled: !usdt }">
-          {{ usdt || "Amount of TON that you will get" }}
+          {{ usdt || "Amount of USDT that you will get" }}
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@ function swap() {
 <style scoped>
 .content {
   background-color: var(--secondary-bg);
-  border-radius: 0.75rem;
+  border-radius: 1rem;
 
   display: flex;
   flex-direction: column;
@@ -97,10 +97,11 @@ function swap() {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0.75rem;
+  padding: 1rem;
 }
 
 .field-label {
+  padding-left: 0.75rem;
   font-weight: 600;
 }
 

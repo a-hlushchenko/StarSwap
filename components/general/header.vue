@@ -26,13 +26,13 @@ function connect() {
 <style scoped>
 .header-wrapper {
   background-color: var(--secondary-bg);
-  padding-top: calc(var(--tg-content-safe-area-inset-top) + 0.75rem);
+  padding-top: var(--tg-content-safe-area-inset-top);
 }
 
 .header {
   padding: 0.75rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
   align-items: center;
 }
