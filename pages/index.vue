@@ -52,19 +52,16 @@ function swap() {
         <img src="/img/icons/star.svg" alt="⭐" width="20" />
         <input
           id="stars"
-          name="stars"
           type="number"
           v-model="stars"
           placeholder="Enter amount from 500 to 10,000"
           class="input"
-          enterkeyhint="done"
           @focusout="checkForm"
-          inputmode="decimal"
+          inputmode="numeric"
         />
       </div>
-      <Transition name="error">
-        <p class="input-error" v-if="starsError">{{ starsError }}</p>
-      </Transition>
+
+      <p class="input-error" v-if="starsError">{{ starsError }}</p>
     </div>
 
     <div class="divider"></div>
@@ -144,12 +141,5 @@ function swap() {
 .input-error {
   padding-left: 1rem;
   color: var(--error);
-  transition: all 0.3s;
-  overflow: hidden;
-}
-
-.error-enter-from {
-  opacity: 0;
-  transform: translate(0.5rem, 0);
 }
 </style>
