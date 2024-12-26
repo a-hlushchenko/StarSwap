@@ -43,7 +43,7 @@ function swap() {
 <template>
   <HomeInfo />
 
-  <form class="content">
+  <form class="content" @submit.prevent>
     <div class="field">
       <label for="stars" class="field-label">
         Choose quantity of Telegram Stars
@@ -55,13 +55,11 @@ function swap() {
           name="stars"
           type="number"
           v-model="stars"
-          step="1"
-          min="500"
-          max="10000"
           placeholder="Enter amount from 500 to 10,000"
           class="input"
           enterkeyhint="done"
           @focusout="checkForm"
+          inputmode="decimal"
         />
       </div>
       <Transition name="error">
