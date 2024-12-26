@@ -26,7 +26,7 @@ function connect() {
 <style scoped>
 .header-wrapper {
   background-color: var(--secondary-bg);
-  padding-top: var(--tg-content-safe-area-inset-top);
+  padding-top: var(--tg-safe-area-inset-top);
 }
 
 .header {
