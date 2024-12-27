@@ -12,7 +12,7 @@ const { showAlert } = useWebAppPopup();
       your Stars via purchasing in MiniApp and get your USDT’s
       <span>immediately. </span>
       <button @click="showAlert('test')" class="info-more">
-        Learn more <img src="/img/icons/more.svg" alt=">" height="20" />
+        Learn more<img src="/img/icons/more.svg" alt=">" width="10" />
       </button>
     </p>
   </div>
@@ -43,10 +43,9 @@ const { showAlert } = useWebAppPopup();
 }
 
 .info-more {
-  color: var(--main);
+  color: var(--accent-color);
   /* display: flex; */
   align-items: center;
-  gap: 0.25rem;
   justify-content: center;
 }
 </style>

@@ -16,7 +16,11 @@ function connect() {
   <header class="header-wrapper">
     <div class="header">
       <img src="/img/text-logo.png" alt="StarSwap" class="logo" />
-      <button class="connect-button" @click="connect">
+      <button
+        class="connect-button"
+        @click="connect"
+        :class="{ connected: wallet.address }"
+      >
         {{ formattedAddress || "Connect" }}
       </button>
     </div>
@@ -32,7 +36,7 @@ function connect() {
 }
 
 .header {
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -51,5 +55,10 @@ function connect() {
   cursor: pointer;
   font-weight: 600;
   align-self: flex-end;
+  transition: background-color 0.3s;
+
+  &.connected {
+    background-color: var(--shade);
+  }
 }
 </style>

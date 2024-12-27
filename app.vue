@@ -73,6 +73,8 @@ onMounted(() => {
   --secondary-bg: #212a33;
   --secondary-text: #8694a1;
   --main: #2588d6;
+  --accent-color: #4db2ff;
+  --disabled-color: #a6d8ff;
   --success: #00d250;
   --error: #ff5863;
 }

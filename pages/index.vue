@@ -2,6 +2,17 @@
 const stars = ref<number | null>(null);
 const starsError = ref<string | null>("");
 const rate = ref<number | null>(0.0117);
+const swapAmount = ref<number | null>(null);
+
+const formattedSwapAmount = computed(() => {
+  if (swapAmount.value) {
+    return parseFloat(String(swapAmount.value)).toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
+  }
+  return null;
+});
 
 const usdt = computed(() => {
   if (stars.value && rate.value) {
@@ -32,11 +43,22 @@ function checkForm() {
   starsError.value = "";
 }
 
-function swap() {
-  checkForm();
-  if (stars.value) {
-    console.log("Swapping", stars.value, "stars");
+function recheckError() {
+  if (!isDisabled.value) {
+    starsError.value = "";
+    swapAmount.value = stars.value;
+  } else {
+    swapAmount.value = null;
   }
+}
+
+function swap() {
+  if (isDisabled.value) {
+    checkForm();
+    return;
+  }
+
+  alert("test");
 }
 </script>
 
@@ -59,6 +81,7 @@ function swap() {
           @focusout="checkForm"
           inputmode="numeric"
           enterkeyhint="done"
+          @input="recheckError"
         />
       </div>
 
@@ -79,7 +102,7 @@ function swap() {
   </form>
 
   <button class="swap-button" @click="swap" :class="{ disabled: isDisabled }">
-    Swap Stars
+    Swap {{ formattedSwapAmount ? formattedSwapAmount : "" }} Stars
   </button>
 </template>
 
@@ -133,14 +156,16 @@ function swap() {
   border-radius: 0.5rem;
   padding: 0.75rem;
   font-weight: 700;
+  transition: color 0.3s;
 
   &.disabled {
-    opacity: 0.8;
+    color: var(--disabled-color);
   }
 }
 
 .input-error {
   padding-left: 1rem;
   color: var(--error);
+  font-size: 0.85rem;
 }
 </style>
