@@ -93,10 +93,10 @@ onUnmounted(() => {
   position: fixed;
   left: 0px;
   top: 0px;
-  background-color: #0000003e;
+  background-color: #00000077;
   width: 100%;
   height: 100%;
-  transition: opacity 0.3s;
+  transition: background-color 0.3s;
 }
 
 .popup {
@@ -128,7 +128,7 @@ onUnmounted(() => {
 
 .popup-enter-from,
 .popup-leave-to {
-  opacity: 0;
+  background-color: transparent;
 }
 
 .popup-enter-from .popup,
