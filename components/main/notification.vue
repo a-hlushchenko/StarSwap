@@ -11,9 +11,8 @@ const notificationStore = useNotificationStore();
         error: notificationStore.type === NotificationType.error,
       }"
       v-if="notificationStore.message"
-    >
-      {{ notificationStore.message }}
-    </div>
+      v-html="notificationStore.message"
+    ></div>
   </Transition>
 </template>
 
