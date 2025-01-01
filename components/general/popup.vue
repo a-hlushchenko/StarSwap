@@ -81,7 +81,7 @@ onUnmounted(() => {
   <div class="popup-wrapper" @click="$emit('close')">
     <div class="popup" ref="popup" @click.stop>
       <button class="close-btn" @click.stop.prevent="$emit('close')">
-        <img src="/img/icons/close.svg" width="12" alt="X" />
+        <IconsClose width="12" />
       </button>
       <slot></slot>
     </div>

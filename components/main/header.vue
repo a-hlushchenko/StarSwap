@@ -32,14 +32,10 @@ function connect() {
 <template>
   <header class="header-wrapper">
     <div class="header">
-      <img src="/img/text-logo.png" alt="StarSwap" class="logo" />
+      <img src="/img/main/text-logo.png" alt="StarSwap" class="logo" />
 
-      <GeneralButton
-        class="connect-button"
-        @click="connect"
-        :class="{ connected: wallet.address }"
-      >
-        <img src="/img/icons/ton.svg" width="16" alt="TON" />
+      <GeneralButton @click="connect" :class="{ connected: wallet.address }">
+        <IconsTon width="16" />
         {{ formattedAddress || "Connect" }}
       </GeneralButton>
     </div>
@@ -68,11 +64,7 @@ function connect() {
   width: 120px;
 }
 
-.connect-button {
-  padding: 0.75rem 1rem;
-
-  &.connected {
-    background-color: var(--shade);
-  }
+.connected {
+  background-color: var(--shade);
 }
 </style>

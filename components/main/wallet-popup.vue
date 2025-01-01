@@ -25,10 +25,10 @@ function disconnectWallet() {
       <GeneralFlex column>
         <div class="block">
           <div class="icon">
-            <img src="/img/icons/wallet.svg" width="24" alt="TON" />
+            <IconsWallet width="24" />
           </div>
 
-          <GeneralFlex column small>
+          <GeneralFlex column gap="small">
             <p class="address">
               {{ shortAddress(wallet.address) }}
             </p>

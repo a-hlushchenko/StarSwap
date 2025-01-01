@@ -9,10 +9,12 @@ import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 const { platform } = useWebApp();
 
 const { wallet } = storeToRefs(useWalletStore());
+const rateStore = useRateStore();
+const { isLoader } = storeToRefs(useLoaderStore());
 
 const unsubscribeModal = ref();
 
-onMounted(() => {
+onMounted(async () => {
   window.Telegram.WebApp.lockOrientation();
   window.Telegram.WebApp.disableVerticalSwipes();
   if (["ios", "android"].includes(platform)) {
@@ -37,6 +39,10 @@ onMounted(() => {
       }
     }
   );
+
+  await rateStore.fetchRate();
+
+  isLoader.value = false;
 });
 </script>
 

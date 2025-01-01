@@ -1,18 +1,16 @@
 h
 <script setup lang="ts">
 const props = defineProps<{
-  mini?: boolean;
   column?: boolean;
   space?: boolean;
   center?: boolean;
-  small?: boolean;
-  big?: boolean;
+  gap?: "small" | "mini" | "middle" | "big";
   wfull?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="flex" :class="{ mini, column, space, center, small, big, wfull }">
+  <div class="flex" :class="[{ column, space, center, wfull }, `gap-${gap}`]">
     <slot></slot>
   </div>
 </template>
@@ -23,14 +21,6 @@ const props = defineProps<{
   gap: 1rem;
 }
 
-.mini {
-  gap: 0.5rem;
-}
-
-.small {
-  gap: 0.25rem;
-}
-
 .center {
   align-items: center;
 }
@@ -39,15 +29,27 @@ const props = defineProps<{
   flex-direction: column;
 }
 
-.big {
-  gap: 2rem;
-}
-
 .space {
   justify-content: space-between;
 }
 
 .wfull {
   width: 100%;
+}
+
+.gap-big {
+  gap: 1.5rem;
+}
+
+.gap-middle {
+  gap: 0.75rem;
+}
+
+.gap-mini {
+  gap: 0.5rem;
+}
+
+.gap-small {
+  gap: 0.25rem;
 }
 </style>

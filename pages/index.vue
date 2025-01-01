@@ -1,17 +1,45 @@
 <script setup lang="ts">
-import { useWebAppHapticFeedback } from "vue-tg";
+import { useWebAppHapticFeedback, useWebAppNavigation } from "vue-tg";
 
 const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
+const { openInvoice } = useWebAppNavigation();
 
 const { wallet } = storeToRefs(useWalletStore());
 const notificationStore = useNotificationStore();
+const { rate } = storeToRefs(useRateStore());
 
 const stars = ref<number | null>(null);
 const starsError = ref<string | null>("");
-const rate = ref<number | null>(0.0117);
 const swapAmount = ref<number | null>(null);
+const resultAmount = ref<number | null>(null);
+const invoiceUrl = ref<string>("");
 
 const isConfirmPopup = ref(false);
+const isSwapLoading = ref(false);
+
+const formattedSwapAmount = computed(() => {
+  if (!swapAmount.value) return null;
+
+  return parseFloat(String(swapAmount.value)).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+});
+
+const usdt = computed(() => {
+  if (!stars.value || !rate.value) return null;
+
+  return (stars.value * rate.value.conversion_rate).toFixed(2);
+});
+
+const isDisabled = computed(
+  () =>
+    !rate.value ||
+    !stars.value ||
+    stars.value < rate.value.min_amount ||
+    stars.value > rate.value.max_amount ||
+    !wallet.value.address
+);
 
 function openConfirmPopup() {
   impactOccurred("medium");
@@ -23,55 +51,33 @@ function closeConfirmPopup() {
   isConfirmPopup.value = false;
 }
 
-const formattedSwapAmount = computed(() => {
-  if (swapAmount.value) {
-    return parseFloat(String(swapAmount.value)).toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    });
-  }
-  return null;
-});
-
-const usdt = computed(() => {
-  if (stars.value && rate.value) {
-    return (stars.value * rate.value).toFixed(2);
-  }
-  return null;
-});
-
-const isDisabled = computed(
-  () =>
-    !stars.value ||
-    stars.value < 500 ||
-    stars.value > 10000 ||
-    !wallet.value.address
-);
-
 function checkForm() {
-  if (!stars.value) {
-    notificationOccurred("error");
-    starsError.value = "Enter quantity of stars";
-    return;
-  }
-
-  if (stars.value < 500) {
-    notificationOccurred("error");
-    starsError.value = "Min quantity is 500 stars";
-    return;
-  }
-
-  if (stars.value > 10000) {
-    notificationOccurred("error");
-    starsError.value = "Max quantity is 10,000 stars";
-    return;
-  }
+  if (!rate.value) return;
 
   if (!wallet.value.address) {
     notificationOccurred("error");
     notificationStore.showMessage("Connect wallet first");
     return;
   }
+
+  if (!stars.value) {
+    notificationOccurred("error");
+    starsError.value = "Enter quantity of stars";
+    return;
+  }
+
+  if (stars.value < rate.value.min_amount) {
+    notificationOccurred("error");
+    starsError.value = `Min quantity is ${rate.value.min_amount} stars`;
+    return;
+  }
+
+  if (stars.value > rate.value.max_amount) {
+    notificationOccurred("error");
+    starsError.value = `Max quantity is ${rate.value.max_amount} stars`;
+    return;
+  }
+
   starsError.value = "";
 }
 
@@ -84,103 +90,128 @@ function recheckError() {
   }
 }
 
-function swap() {
+async function createSwap() {
+  isSwapLoading.value = true;
+
+  const data = await f("/s/", {
+    method: "POST",
+    body: JSON.stringify({
+      to_token_id: 1,
+      amount: stars.value,
+      address: wallet.value.address,
+    }),
+  });
+
+  if (data) {
+    invoiceUrl.value = data.swap.invoice_url;
+    resultAmount.value = data.swap.result_amount;
+  } else {
+    closeConfirmPopup();
+  }
+
+  isSwapLoading.value = false;
+}
+
+async function swap() {
   if (isDisabled.value) {
     checkForm();
     return;
   }
 
   openConfirmPopup();
+
+  await createSwap();
+}
+
+function confirm() {
+  if (isSwapLoading.value) return;
+
+  closeConfirmPopup();
+
+  setTimeout(() => {
+    openInvoice(invoiceUrl.value, (status) => {
+      if (status === "paid") {
+        notificationOccurred("success");
+        notificationStore.showMessage("Swap completed test");
+      }
+    });
+  }, 300);
 }
 </script>
 
 <template>
   <HomeInfo />
 
-  <form class="form" @submit.prevent>
-    <div class="field">
-      <label for="stars" class="field-label">
-        Choose quantity of Telegram Stars
-      </label>
-      <div class="input-wrapper">
-        <img src="/img/icons/star.svg" alt="⭐" width="20" />
-        <input
-          id="stars"
-          type="string"
-          v-model="stars"
-          placeholder="Enter amount from 500 to 10,000"
-          class="input"
-          @focusout="checkForm"
-          inputmode="numeric"
-          enterkeyhint="done"
-          @input="recheckError"
-        />
-      </div>
+  <form @submit.prevent>
+    <GeneralFlex column gap="big">
+      <GeneralField
+        v-model="stars"
+        id="stars"
+        type="number"
+        step="0.01"
+        :placeholder="`Enter amount from ${rate?.min_amount} to ${rate?.max_amount}`"
+        label="Choose quantity of Telegram Stars"
+        isInput
+        :error="starsError"
+        @focusout="checkForm"
+        @input="recheckError"
+      >
+        <IconsStar width="20" />
+      </GeneralField>
 
-      <p class="input-error" v-if="starsError">{{ starsError }}</p>
-    </div>
-
-    <div class="field">
-      <label class="field-label">You will recive</label>
-      <div class="input-wrapper">
-        <img src="/img/icons/usdt.svg" alt="⭐" width="20" />
-        <div class="input" :class="{ disabled: !usdt }">
+      <GeneralField label="Choose quantity of Telegram Stars">
+        <IconsUsdt width="20" height="20" />
+        <div :class="{ disabled: !usdt }">
           {{ usdt || "Amount of USDT that you will get" }}
         </div>
-      </div>
-    </div>
+      </GeneralField>
 
-    <GeneralButton @click="swap" :disabled="isDisabled">
-      Swap {{ formattedSwapAmount ? formattedSwapAmount : "" }} Stars
-    </GeneralButton>
+      <GeneralButton type="button" @click="swap" :disabled="isDisabled">
+        Swap {{ formattedSwapAmount ? formattedSwapAmount : "" }} Stars
+      </GeneralButton>
+    </GeneralFlex>
   </form>
+
   <Transition name="popup">
     <GeneralPopup v-if="isConfirmPopup" @close="closeConfirmPopup">
-      <GeneralTitle>Confirmation test</GeneralTitle>
+      <GeneralTitle>Confirmation</GeneralTitle>
+      <GeneralFlex column>
+        <GeneralField label="You send">
+          <IconsStar width="20" />
+          <div>
+            {{ formattedSwapAmount }}
+          </div>
+        </GeneralField>
+
+        <GeneralField label="You receive">
+          <IconsUsdt width="20" height="20" />
+          <div>
+            {{ resultAmount || usdt }}
+          </div>
+        </GeneralField>
+
+        <GeneralField label="To">
+          <IconsWallet width="20" style="flex-shrink: 0" />
+          <div class="address">
+            {{ wallet.address }}
+          </div>
+        </GeneralField>
+
+        <GeneralButton type="button" @click="confirm" :disabled="isSwapLoading">
+          <GeneralLoader v-if="isSwapLoading" />
+          <span v-else>Confirm</span>
+        </GeneralButton>
+      </GeneralFlex>
     </GeneralPopup>
   </Transition>
 </template>
 
 <style scoped>
-.form {
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.disabled {
+  color: var(--secondary-text);
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.field-label {
-  padding-left: 1rem;
-  font-weight: 600;
-}
-
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background-color: var(--shade);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-}
-
-.input {
-  width: 100%;
-
-  &.disabled,
-  &::placeholder {
-    color: var(--secondary-text);
-  }
-}
-
-.input-error {
-  padding-left: 1rem;
-  color: var(--error);
-  font-size: 0.85rem;
+.address {
+  word-break: break-all;
 }
 </style>
