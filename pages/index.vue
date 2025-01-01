@@ -1,8 +1,27 @@
 <script setup lang="ts">
+import { useWebAppHapticFeedback } from "vue-tg";
+
+const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
+
+const { wallet } = storeToRefs(useWalletStore());
+const notificationStore = useNotificationStore();
+
 const stars = ref<number | null>(null);
 const starsError = ref<string | null>("");
 const rate = ref<number | null>(0.0117);
 const swapAmount = ref<number | null>(null);
+
+const isConfirmPopup = ref(false);
+
+function openConfirmPopup() {
+  impactOccurred("medium");
+  isConfirmPopup.value = true;
+}
+
+function closeConfirmPopup() {
+  impactOccurred("medium");
+  isConfirmPopup.value = false;
+}
 
 const formattedSwapAmount = computed(() => {
   if (swapAmount.value) {
@@ -22,22 +41,35 @@ const usdt = computed(() => {
 });
 
 const isDisabled = computed(
-  () => !stars.value || stars.value < 500 || stars.value > 10000
+  () =>
+    !stars.value ||
+    stars.value < 500 ||
+    stars.value > 10000 ||
+    !wallet.value.address
 );
 
 function checkForm() {
   if (!stars.value) {
+    notificationOccurred("error");
     starsError.value = "Enter quantity of stars";
     return;
   }
 
   if (stars.value < 500) {
+    notificationOccurred("error");
     starsError.value = "Min quantity is 500 stars";
     return;
   }
 
   if (stars.value > 10000) {
+    notificationOccurred("error");
     starsError.value = "Max quantity is 10,000 stars";
+    return;
+  }
+
+  if (!wallet.value.address) {
+    notificationOccurred("error");
+    notificationStore.showMessage("Connect wallet first");
     return;
   }
   starsError.value = "";
@@ -58,14 +90,14 @@ function swap() {
     return;
   }
 
-  alert("test");
+  openConfirmPopup();
 }
 </script>
 
 <template>
   <HomeInfo />
 
-  <form class="content" @submit.prevent>
+  <form class="form" @submit.prevent>
     <div class="field">
       <label for="stars" class="field-label">
         Choose quantity of Telegram Stars
@@ -88,8 +120,6 @@ function swap() {
       <p class="input-error" v-if="starsError">{{ starsError }}</p>
     </div>
 
-    <div class="divider"></div>
-
     <div class="field">
       <label class="field-label">You will recive</label>
       <div class="input-wrapper">
@@ -99,26 +129,30 @@ function swap() {
         </div>
       </div>
     </div>
-  </form>
 
-  <button class="swap-button" @click="swap" :class="{ disabled: isDisabled }">
-    Swap {{ formattedSwapAmount ? formattedSwapAmount : "" }} Stars
-  </button>
+    <GeneralButton @click="swap" :disabled="isDisabled">
+      Swap {{ formattedSwapAmount ? formattedSwapAmount : "" }} Stars
+    </GeneralButton>
+  </form>
+  <Transition name="popup">
+    <GeneralPopup v-if="isConfirmPopup" @close="closeConfirmPopup">
+      <GeneralTitle>Confirmation test</GeneralTitle>
+    </GeneralPopup>
+  </Transition>
 </template>
 
 <style scoped>
-.content {
-  background-color: var(--secondary-bg);
+.form {
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1rem;
 }
 
 .field-label {
@@ -141,25 +175,6 @@ function swap() {
   &.disabled,
   &::placeholder {
     color: var(--secondary-text);
-  }
-}
-
-.divider {
-  background-color: var(--shade);
-  height: 2px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.swap-button {
-  background-color: var(--main);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  font-weight: 700;
-  transition: color 0.3s;
-
-  &.disabled {
-    color: var(--disabled-color);
   }
 }
 

@@ -2,7 +2,8 @@
 
 <template>
   <div class="app" id="app">
-    <GeneralHeader />
+    <MainHeader />
+    <MainNotification />
     <div class="container">
       <slot></slot>
     </div>
@@ -13,13 +14,13 @@
 .app {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .container {
-  padding: 16px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 2rem;
 }
 </style>

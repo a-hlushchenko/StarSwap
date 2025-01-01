@@ -61,7 +61,7 @@ onMounted(() => {
 
 ::-webkit-scrollbar-thumb {
   background: var(--main);
-  border-radius: 50px;
+  border-radius: 100%;
 }
 
 :root {
@@ -72,11 +72,14 @@ onMounted(() => {
   --text: #fff;
   --secondary-bg: #212a33;
   --secondary-text: #8694a1;
+  --light-bg: #3c4c5d;
   --main: #2588d6;
   --accent-color: #4db2ff;
   --disabled-color: #a6d8ff;
   --success: #00d250;
   --error: #ff5863;
+
+  overscroll-behavior: none;
 }
 
 ::selection {
@@ -93,12 +96,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--text);
   overflow-x: hidden;
-}
-
-.popup-enter-from,
-.popup-leave-to {
-  transform: translate(0px, -1rem);
-  opacity: 0;
 }
 
 .page-enter-active,

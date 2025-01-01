@@ -1,14 +1,31 @@
 <script setup lang="ts">
+import { useWebAppHapticFeedback } from "vue-tg";
+
+const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
+
 const { wallet } = storeToRefs(useWalletStore());
 
+const isWalletPopup = ref(false);
+
 const formattedAddress = computed(() => {
-  return wallet.value.address
-    ? `${wallet.value.address.slice(0, 3)}...${wallet.value.address.slice(-3)}`
-    : "";
+  return wallet.value.address ? shortAddress(wallet.value.address) : "";
 });
 
+function openWalletPopup() {
+  impactOccurred("medium");
+  isWalletPopup.value = true;
+}
+
+function closeWalletPopup() {
+  impactOccurred("medium");
+  isWalletPopup.value = false;
+}
+
 function connect() {
+  impactOccurred("medium");
+
   if (!wallet.value.address) wallet.value.connector.openModal();
+  else openWalletPopup();
 }
 </script>
 
@@ -16,14 +33,18 @@ function connect() {
   <header class="header-wrapper">
     <div class="header">
       <img src="/img/text-logo.png" alt="StarSwap" class="logo" />
-      <button
+
+      <GeneralButton
         class="connect-button"
         @click="connect"
         :class="{ connected: wallet.address }"
       >
+        <img src="/img/icons/ton.svg" width="16" alt="TON" />
         {{ formattedAddress || "Connect" }}
-      </button>
+      </GeneralButton>
     </div>
+
+    <MainWalletPopup :isActive="isWalletPopup" @close="closeWalletPopup" />
   </header>
 </template>
 
@@ -36,10 +57,10 @@ function connect() {
 }
 
 .header {
-  padding: 0.75rem 1rem;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -48,14 +69,7 @@ function connect() {
 }
 
 .connect-button {
-  background-color: var(--main);
-  padding: 0.5rem 2rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  align-self: flex-end;
-  transition: background-color 0.3s;
+  padding: 0.75rem 1rem;
 
   &.connected {
     background-color: var(--shade);
