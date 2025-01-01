@@ -7,9 +7,12 @@ export default defineNuxtPlugin(() => {
     const notificationStore = useNotificationStore();
 
     const baseURL = import.meta.env.VITE_API_URL;
-    const isDev = import.meta.env.VITE_NODE_ENV === "dev";
-    const devInitData = import.meta.env.VITE_INIT_DATA;
+
+    const isDev = import.meta.env.VITE_NODE_ENVs === "dev";
+    const devInitData = import.meta.env.VITE_INIT_DATAs;
     const userInitData = isDev ? devInitData : initData;
+    console.log("userInitData", userInitData);
+    console.log("initData", initData);
 
     options.headers = {
       ...options.headers,
