@@ -14,6 +14,7 @@ const unsubscribeModal = ref();
 
 onMounted(() => {
   window.Telegram.WebApp.lockOrientation();
+  window.Telegram.WebApp.disableVerticalSwipes();
   if (["ios", "android"].includes(platform)) {
     window.Telegram.WebApp.requestFullscreen();
   }
