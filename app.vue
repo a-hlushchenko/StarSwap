@@ -87,6 +87,7 @@ onMounted(async () => {
   --error: #ff5863;
 
   overscroll-behavior: none;
+  overflow: hidden;
 }
 
 ::selection {
@@ -102,16 +103,5 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text);
-  overflow-x: hidden;
-}
-
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s;
-}
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  scale: 1.02;
 }
 </style>
