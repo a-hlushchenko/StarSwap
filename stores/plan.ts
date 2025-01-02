@@ -1,4 +1,4 @@
-interface rateType {
+interface planType {
   id: number;
   type: string;
   conversion_rate: number;
@@ -6,16 +6,16 @@ interface rateType {
   max_amount: number;
 }
 
-export const useRateStore = defineStore("rate", () => {
-  const rate = ref<rateType>();
+export const usePlanStore = defineStore("plan", () => {
+  const plan = ref<planType>();
 
   async function fetchRate() {
     const data = await f("/u/");
 
     if (data) {
-      rate.value = data.plan;
+      plan.value = data.plan;
     }
   }
 
-  return { rate, fetchRate };
+  return { plan, fetchRate };
 });

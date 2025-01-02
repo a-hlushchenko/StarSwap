@@ -9,7 +9,8 @@ import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 const { platform } = useWebApp();
 
 const { wallet } = storeToRefs(useWalletStore());
-const rateStore = useRateStore();
+const planStore = usePlanStore();
+const tokenStore = useTokenStore();
 const { isLoader } = storeToRefs(useLoaderStore());
 
 const unsubscribeModal = ref();
@@ -40,7 +41,8 @@ onMounted(async () => {
     }
   );
 
-  await rateStore.fetchRate();
+  await planStore.fetchRate();
+  await tokenStore.fetchToken();
 
   isLoader.value = false;
 });
@@ -68,7 +70,7 @@ onMounted(async () => {
 
 ::-webkit-scrollbar-thumb {
   background: var(--main);
-  border-radius: 100%;
+  border-radius: 20px;
 }
 
 :root {

@@ -8,8 +8,8 @@ const { showAlert } = useWebAppPopup();
   <div class="info-wrapper">
     <h1 class="h1">Swap Telegram Stars to USDT</h1>
     <p class="info-text">
-      Connect your wallet and <span>swap Telegram Stars to USDT</span>. Send
-      your Stars via purchasing in MiniApp and get your USDT’s
+      Connect your wallet and <span>swap Telegram Stars to USD₮</span>. Send
+      your Stars via purchasing in MiniApp and get your USD₮
       <span>immediately. </span>
       <button @click="showAlert('test')" class="info-more">
         Learn more<iconsMore width="10" />
