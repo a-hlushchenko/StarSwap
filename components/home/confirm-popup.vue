@@ -41,7 +41,7 @@ async function createSwap() {
 
   if (data) {
     invoiceUrl.value = data.swap.invoice_url;
-    swapId.value = data.swap.invoice_url;
+    swapId.value = data.swap.id;
   }
 
   isSwapLoading.value = false;
