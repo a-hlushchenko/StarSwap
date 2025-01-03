@@ -17,6 +17,7 @@ const notificationStore = useNotificationStore();
 const { wallet } = storeToRefs(useWalletStore());
 
 const invoiceUrl = ref<string>("");
+const swapId = ref<number>();
 
 const isSwapLoading = ref(false);
 const isCancelled = ref(false);
@@ -40,6 +41,7 @@ async function createSwap() {
 
   if (data) {
     invoiceUrl.value = data.swap.invoice_url;
+    swapId.value = data.swap.invoice_url;
   }
 
   isSwapLoading.value = false;
@@ -52,7 +54,7 @@ const invoiceHandler = (
   switch (status) {
     case "paid":
       notificationOccurred("success");
-      router.push("/swapping");
+      router.push(`/swap${swapId.value}`);
       break;
 
     case "cancelled":
