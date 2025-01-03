@@ -29,7 +29,7 @@ function closePopup() {
 async function createSwap() {
   isSwapLoading.value = true;
 
-  const data = await f("/s/", {
+  const data = await f("/s", {
     method: "POST",
     body: JSON.stringify({
       to_token_id: 1,
