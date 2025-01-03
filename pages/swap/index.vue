@@ -57,7 +57,10 @@ function validateForm() {
   const { min_amount, max_amount } = plan.value;
 
   if (!wallet.value.address) {
-    notificationStore.showMessage("Connect wallet first!");
+    notificationStore.showMessage(
+      "Connect wallet first!",
+      NotificationType.error
+    );
   } else if (!stars.value) {
     starsError.value = "Enter quantity of stars";
   } else if (stars.value < min_amount) {

@@ -52,7 +52,7 @@ const invoiceHandler = (
   switch (status) {
     case "paid":
       notificationOccurred("success");
-      navigateTo("/swapping");
+      router.push("/swapping");
       break;
 
     case "cancelled":
