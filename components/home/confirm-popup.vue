@@ -47,10 +47,23 @@ async function createSwap() {
   isSwapLoading.value = false;
 }
 
-const invoiceHandler = (
-  url: string,
-  status: "cancelled" | "paid" | "failed" | "pending"
-) => {};
+const invoiceHandler = (status: string) => {
+  switch (status) {
+    case "paid":
+      notificationOccurred("success");
+      notificationStore.showMessage("Payment successful");
+      router.push(`/swap/${swapId.value}`);
+      break;
+    case "cancelled":
+      notificationOccurred("error");
+      isCancelled.value = true;
+      emit("tooglePopup", true);
+      break;
+    case "failed":
+      notificationStore.showMessage("Payment failed", NotificationType.error);
+      break;
+  }
+};
 
 async function confirm() {
   if (isSwapLoading.value) return;
@@ -61,19 +74,7 @@ async function confirm() {
 
   setTimeout(() => {
     openInvoice(invoiceUrl.value, (status) => {
-      console.log("status", status);
-      if (status === "paid") {
-        notificationOccurred("success");
-        notificationStore.showMessage("Payment successful");
-        router.push(`/swap/${swapId.value}`);
-      } else if (status === "cancelled") {
-        notificationOccurred("error");
-        isCancelled.value = true;
-        emit("tooglePopup", true);
-      } else if (status === "failed") {
-        notificationOccurred("error");
-        notificationStore.showMessage("Payment failed", NotificationType.error);
-      }
+      invoiceHandler(status);
     });
   }, 300);
 }
