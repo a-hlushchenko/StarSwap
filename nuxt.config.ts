@@ -3,6 +3,8 @@ export default defineNuxtConfig({
   ssr: false,
 
   app: {
+    pageTransition: { name: "page", mode: "out-in" },
+
     head: {
       htmlAttrs: {
         lang: "en",

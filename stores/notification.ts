@@ -15,7 +15,7 @@ export const useNotificationStore = defineStore("notification", () => {
     if (timeoutId.value) {
       clearTimeout(timeoutId.value);
       clearMessage();
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
     message.value = text;

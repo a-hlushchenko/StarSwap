@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@lottiefiles/dotlottie-vue": "^0.4.16",
-    "@lottiefiles/lottie-player": "^2.0.4",
     "@nuxt/fonts": "^0.10.3",
     "@nuxt/image": "^1.8.1",
     "@pinia/nuxt": "^0.9.0",

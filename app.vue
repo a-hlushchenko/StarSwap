@@ -75,6 +75,11 @@ onMounted(async () => {
 
 :root {
   scroll-behavior: smooth;
+  --fullscreen: calc(
+    var(--tg-safe-area-inset-top, 0px) +
+      var(--tg-content-safe-area-inset-top, 0px)
+  );
+  --header: 72px;
   background-color: var(--bg);
   --bg: #1a2026;
   --shade: #293440;
@@ -105,5 +110,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text);
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  scale: 0.98;
 }
 </style>

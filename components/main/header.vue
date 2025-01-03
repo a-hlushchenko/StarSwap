@@ -32,7 +32,9 @@ function connect() {
 <template>
   <header class="header-wrapper">
     <div class="header">
-      <img src="/img/main/text-logo.png" alt="StarSwap" class="logo" />
+      <NuxtLink to="/">
+        <img src="/img/main/text-logo.png" alt="StarSwap" class="logo" />
+      </NuxtLink>
 
       <GeneralButton @click="connect" :class="{ connected: wallet.address }">
         <IconsTon width="16" />
@@ -47,9 +49,7 @@ function connect() {
 <style scoped>
 .header-wrapper {
   background-color: var(--secondary-bg);
-  padding-top: calc(
-    var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top)
-  );
+  padding-top: var(--fullscreen);
 }
 
 .header {

@@ -10,7 +10,7 @@ export const useTokenStore = defineStore("token", () => {
   const token = ref<tokenType>();
 
   async function fetchTokenHandler() {
-    const data = await f("/t/");
+    const data = await f("/t");
 
     if (data) {
       token.value = data.token;
@@ -20,7 +20,7 @@ export const useTokenStore = defineStore("token", () => {
   async function fetchToken() {
     await fetchTokenHandler();
 
-    setInterval(fetchTokenHandler, 1000);
+    setInterval(fetchTokenHandler, 5000);
   }
 
   return { token, fetchToken };

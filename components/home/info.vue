@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { useWebAppPopup } from "vue-tg";
+import { useWebAppNavigation, useWebAppPopup } from "vue-tg";
 
 const { showAlert } = useWebAppPopup();
+const { openTelegramLink } = useWebAppNavigation();
 </script>
 
 <template>
   <div class="info-wrapper">
     <h1 class="h1">Swap Telegram Stars to USDT</h1>
-    <p class="info-text">
+    <GeneralText>
       Connect your wallet and <span>swap Telegram Stars to USD₮</span>. Send
       your Stars via purchasing in MiniApp and get your USD₮
       <span>immediately. </span>
-      <button @click="showAlert('test')" class="info-more">
-        Learn more<iconsMore width="10" />
-      </button>
-    </p>
+      <GeneralMore @click="openTelegramLink('https://t/me/thestarswap')">
+        Learn more
+      </GeneralMore>
+    </GeneralText>
   </div>
 </template>
 
@@ -29,23 +30,5 @@ const { showAlert } = useWebAppPopup();
 .h1 {
   font-size: 1.25rem;
   font-weight: 600;
-}
-
-.info-text {
-  color: var(--secondary-text);
-  line-height: 1.25;
-  text-align: center;
-  font-size: 0.9rem;
-
-  span {
-    font-weight: 500;
-  }
-}
-
-.info-more {
-  color: var(--accent-color);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>

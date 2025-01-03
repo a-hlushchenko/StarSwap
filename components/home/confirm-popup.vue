@@ -1,0 +1,120 @@
+<script setup lang="ts">
+const props = defineProps<{
+  stars: number | null;
+  usdt: number | null;
+  swapAmount: string | null;
+}>();
+
+const emit = defineEmits(["tooglePopup"]);
+import { useWebAppHapticFeedback, useWebAppNavigation } from "vue-tg";
+
+const router = useRouter();
+
+const { openInvoice } = useWebAppNavigation();
+const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
+
+const notificationStore = useNotificationStore();
+const { wallet } = storeToRefs(useWalletStore());
+
+const invoiceUrl = ref<string>("");
+
+const isSwapLoading = ref(false);
+const isCancelled = ref(false);
+
+function closePopup() {
+  emit("tooglePopup", false);
+  isCancelled.value = false;
+}
+
+async function createSwap() {
+  isSwapLoading.value = true;
+
+  const data = await f("/s/", {
+    method: "POST",
+    body: JSON.stringify({
+      to_token_id: 1,
+      amount: props.stars,
+      address: wallet.value.address,
+    }),
+  });
+
+  if (data) {
+    invoiceUrl.value = data.swap.invoice_url;
+  }
+
+  isSwapLoading.value = false;
+}
+
+const invoiceHandler = (
+  url: string,
+  status: "cancelled" | "paid" | "failed" | "pending"
+) => {
+  switch (status) {
+    case "paid":
+      notificationOccurred("success");
+      navigateTo("/swapping");
+      break;
+
+    case "cancelled":
+      notificationOccurred("error");
+      isCancelled.value = true;
+      emit("tooglePopup", true);
+      break;
+
+    case "failed":
+      notificationStore.showMessage("Payment failed", NotificationType.error);
+      break;
+  }
+};
+
+async function confirm() {
+  if (isSwapLoading.value) return;
+
+  if (!isCancelled.value) await createSwap();
+
+  emit("tooglePopup", false);
+
+  setTimeout(() => {
+    openInvoice(invoiceUrl.value, invoiceHandler);
+  }, 300);
+}
+</script>
+
+<template>
+  <GeneralPopup @close="closePopup">
+    <GeneralTitle>Confirmation</GeneralTitle>
+    <GeneralFlex column>
+      <GeneralField label="You send">
+        <IconsStar width="20" />
+        <div>
+          {{ swapAmount }}
+        </div>
+      </GeneralField>
+
+      <GeneralField label="You receive">
+        <IconsUsdt width="20" height="20" />
+        <div>
+          {{ usdt }}
+        </div>
+      </GeneralField>
+
+      <GeneralField label="To">
+        <IconsWallet width="20" style="flex-shrink: 0" />
+        <div class="address">
+          {{ wallet.address }}
+        </div>
+      </GeneralField>
+
+      <GeneralButton type="button" @click="confirm">
+        <GeneralLoader v-if="isSwapLoading" />
+        <span v-else>Confirm</span>
+      </GeneralButton>
+    </GeneralFlex>
+  </GeneralPopup>
+</template>
+
+<style scoped>
+.address {
+  word-break: break-all;
+}
+</style>
