@@ -54,6 +54,7 @@ const invoiceHandler = (
   switch (status) {
     case "paid":
       notificationOccurred("success");
+      notificationStore.showMessage("Payment successful");
       router.push(`/swap/${swapId.value}`);
       break;
 
