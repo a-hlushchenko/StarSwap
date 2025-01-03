@@ -51,6 +51,7 @@ const invoiceHandler = (
   url: string,
   status: "cancelled" | "paid" | "failed" | "pending"
 ) => {
+  console.log("status", status);
   if (status === "paid") {
     notificationOccurred("success");
     notificationStore.showMessage("Payment successful");
