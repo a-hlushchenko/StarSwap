@@ -54,7 +54,7 @@ const invoiceHandler = (
   switch (status) {
     case "paid":
       notificationOccurred("success");
-      router.push(`/swap${swapId.value}`);
+      router.push(`/swap/${swapId.value}`);
       break;
 
     case "cancelled":
