@@ -51,7 +51,6 @@ const invoiceHandler = (status: string) => {
   switch (status) {
     case "paid":
       notificationOccurred("success");
-      notificationStore.showMessage("Payment successful");
       router.push(`/swap/${swapId.value}`);
       break;
     case "cancelled":
@@ -73,9 +72,7 @@ async function confirm() {
   emit("tooglePopup", false);
 
   setTimeout(() => {
-    openInvoice(invoiceUrl.value, (status) => {
-      invoiceHandler(status);
-    });
+    openInvoice(invoiceUrl.value, (status) => invoiceHandler(status));
   }, 300);
 }
 </script>
