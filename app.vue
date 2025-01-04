@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import "swiper/css";
 import "./assets/css/index.css";
-import { useWebApp } from "vue-tg";
+import { useWebApp, useWebAppSettingsButton } from "vue-tg";
 import { useWalletStore } from "./stores/wallet";
 import { storeToRefs } from "pinia";
 import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 
 const { platform } = useWebApp();
+const { onSettingsButtonClicked, showSettingsButton } =
+  useWebAppSettingsButton();
 
 const { wallet } = storeToRefs(useWalletStore());
 const planStore = usePlanStore();
 const tokenStore = useTokenStore();
 const { isLoader } = storeToRefs(useLoaderStore());
+const notificationStore = useNotificationStore();
 
 const unsubscribeModal = ref();
 
@@ -21,6 +24,12 @@ onMounted(async () => {
   if (["ios", "android"].includes(platform)) {
     window.Telegram.WebApp.requestFullscreen();
   }
+
+  onSettingsButtonClicked(() => {
+    notificationStore.showMessage("Settings");
+  });
+
+  showSettingsButton();
 
   wallet.value.connector = new TonConnectUI({
     manifestUrl:
