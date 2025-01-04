@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import "swiper/css";
 import "./assets/css/index.css";
-import { useWebApp, useWebAppSettingsButton } from "vue-tg";
+import {
+  useWebApp,
+  useWebAppHapticFeedback,
+  useWebAppSettingsButton,
+} from "vue-tg";
 import { useWalletStore } from "./stores/wallet";
 import { storeToRefs } from "pinia";
 import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
@@ -9,11 +13,13 @@ import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 const { platform } = useWebApp();
 const { onSettingsButtonClicked, showSettingsButton } =
   useWebAppSettingsButton();
+const { impactOccurred } = useWebAppHapticFeedback();
 
 const { wallet } = storeToRefs(useWalletStore());
 const planStore = usePlanStore();
 const tokenStore = useTokenStore();
 const { isLoader } = storeToRefs(useLoaderStore());
+const { isSettings } = storeToRefs(useSettingsStore());
 const notificationStore = useNotificationStore();
 
 const unsubscribeModal = ref();
@@ -25,8 +31,9 @@ onMounted(async () => {
     window.Telegram.WebApp.requestFullscreen();
   }
 
-  onSettingsButtonClicked(() => {
-    notificationStore.showMessage("Settings");
+  Telegram.WebApp.onEvent("settingsButtonClicked", () => {
+    impactOccurred("medium");
+    isSettings.value = true;
   });
 
   showSettingsButton();

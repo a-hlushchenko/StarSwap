@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWebAppHapticFeedback } from "vue-tg";
 
-const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
+const { impactOccurred } = useWebAppHapticFeedback();
 
 const { wallet } = storeToRefs(useWalletStore());
 

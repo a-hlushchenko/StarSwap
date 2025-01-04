@@ -1,10 +1,15 @@
 <script setup lang="ts">
 const { isLoader } = storeToRefs(useLoaderStore());
+const { isSettings } = storeToRefs(useSettingsStore());
 </script>
 
 <template>
   <Transition name="loader">
     <MainLoader v-if="isLoader" />
+  </Transition>
+
+  <Transition name="settings">
+    <mainSettings v-if="isSettings" />
   </Transition>
 
   <div class="app" id="app">

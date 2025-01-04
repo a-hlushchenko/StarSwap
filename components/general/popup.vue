@@ -80,9 +80,8 @@ onUnmounted(() => {
 <template>
   <div class="popup-wrapper" @click="$emit('close')">
     <div class="popup" ref="popup" @click.stop>
-      <button class="close-btn" @click.stop.prevent="$emit('close')">
-        <IconsClose width="12" />
-      </button>
+      <IconsClose @click.stop.prevent="$emit('close')" />
+
       <slot></slot>
     </div>
   </div>
@@ -111,19 +110,6 @@ onUnmounted(() => {
   gap: 1.5rem;
   padding-bottom: 2rem;
   transition: transform 0.3s;
-}
-
-.close-btn {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 100%;
-  background-color: var(--shade);
 }
 
 .popup-enter-from,
