@@ -40,7 +40,7 @@ function openLangs() {
           <button class="settings-item" @click="openLangs">Languages</button>
         </GeneralFlex>
 
-        <IconsClose @click.stop.prevent="$emit('close')" />
+        <IconsClose @click.stop.prevent="close" />
       </GeneralBox>
     </div>
   </Transition>
