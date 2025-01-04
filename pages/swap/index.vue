@@ -3,6 +3,8 @@ import { useWebAppHapticFeedback, useWebAppNavigation } from "vue-tg";
 
 const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
 
+const { t } = useI18n();
+
 const notificationStore = useNotificationStore();
 const { wallet } = storeToRefs(useWalletStore());
 const { plan } = storeToRefs(usePlanStore());
@@ -58,26 +60,26 @@ function validateForm() {
 
   if (!wallet.value.address) {
     notificationStore.showMessage(
-      "Connect wallet first!",
+      t("error.connect_wallet"),
       NotificationType.error
     );
   } else if (!stars.value) {
-    starsError.value = "Enter quantity of stars";
+    starsError.value = t("error.enter_stars_amount");
   } else if (stars.value < min_amount) {
-    starsError.value = `Min quantity is ${min_amount} stars`;
+    starsError.value = t("error.min_stars_amount", { min_amount: min_amount });
   } else if (stars.value > max_amount) {
-    starsError.value = `Max quantity is ${max_amount} stars`;
+    starsError.value = t("error.max_stars_amount", { max_amount: max_amount });
   }
 }
 
-function recheckError() {
-  if (!isDisabled.value) {
+watchEffect(() => {
+  if (isDisabled.value) {
+    swapAmount.value = null;
+  } else {
     starsError.value = "";
     swapAmount.value = stars.value;
-  } else {
-    swapAmount.value = null;
   }
-}
+});
 
 async function swap() {
   if (isDisabled.value) {
@@ -91,7 +93,7 @@ async function swap() {
 
 <template>
   <GeneralContainer>
-    <HomeInfo />
+    <SwapInfo />
 
     <form @submit.prevent>
       <GeneralFlex column>
@@ -104,35 +106,39 @@ async function swap() {
               inputmode="numeric"
               enterkeyhint="done"
               step="0.01"
-              :placeholder="`Enter amount from ${plan?.min_amount} to ${plan?.max_amount}`"
-              label="Choose quantity of Telegram Stars"
+              :placeholder="
+                $t('form.stars_placeholder', {
+                  min_amount: plan?.min_amount,
+                  max_amount: plan?.max_amount,
+                })
+              "
+              :label="$t('form.stars_title')"
               isInput
               :error="starsError"
               @focusout="validateForm"
-              @input="recheckError"
             >
               <IconsStar width="20" />
             </GeneralField>
 
             <GeneralDivider />
 
-            <GeneralField label="You will get">
+            <GeneralField :label="t('form.token_title')">
               <IconsUsdt width="20" height="20" />
               <div :class="{ disabled: !usdt }">
-                {{ usdt || "Amount of USD₮ that you will get" }}
+                {{ usdt || $t("form.token_placeholder", { ticker: "USD₮" }) }}
               </div>
             </GeneralField>
           </GeneralFlex>
         </GeneralBox>
 
-        <GeneralButton type="button" @click="swap" :disabled="isDisabled">
-          Swap {{ formattedSwapAmount ? formattedSwapAmount : "" }} Stars
+        <GeneralButton type="button" @click="swap" :disabled="isDisabled"
+          >{{ $t("form.button_text", { amount: formattedSwapAmount || "" }) }}
         </GeneralButton>
       </GeneralFlex>
     </form>
 
     <Transition name="popup">
-      <HomeConfirmPopup
+      <SwapConfirmPopup
         v-if="isConfirmPopup"
         @tooglePopup="toggleConfirmPopup"
         :stars="stars"

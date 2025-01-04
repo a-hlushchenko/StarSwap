@@ -38,7 +38,7 @@ function connect() {
 
       <GeneralButton @click="connect" :class="{ connected: wallet.address }">
         <IconsTon width="16" />
-        {{ formattedAddress || "Connect" }}
+        {{ formattedAddress || $t("wallet.connect") }}
       </GeneralButton>
     </div>
 

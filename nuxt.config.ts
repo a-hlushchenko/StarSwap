@@ -20,5 +20,11 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/fonts", "@pinia/nuxt"],
+  i18n: {
+    lazy: true,
+    locales: [{ code: "en", file: "en.ts" }],
+    defaultLocale: "en",
+  },
+
+  modules: ["@nuxt/fonts", "@pinia/nuxt", "@nuxtjs/i18n"],
 });

@@ -3,6 +3,7 @@ import { DotLottieVue } from "@lottiefiles/dotlottie-vue";
 import { useWebAppNavigation } from "vue-tg";
 
 const route = useRoute();
+const { $f } = useNuxtApp();
 
 const { openLink } = useWebAppNavigation();
 
@@ -20,7 +21,7 @@ const swap = ref<swapType>();
 const intervalId = ref();
 
 async function fetchSwapHandler() {
-  const data = await f(`/s/${swapId.value}`);
+  const data = await $f(`/s/${swapId.value}`);
 
   if (data) {
     swap.value = data.swap;
@@ -101,15 +102,11 @@ onUnmounted(() => {
             loop
             src="/img/swap/swapping.json"
           />
-          <GeneralTitle mini>Swapping Stars to USDt...</GeneralTitle>
+          <GeneralTitle mini>Swapping Stars to USD₮...</GeneralTitle>
           <GeneralText>
             The token will be send to your wallet as soon as the transaction is
             successfully recorded in the blockchain.
           </GeneralText>
-
-          <NuxtLink to="/" class="return-button">
-            <GeneralButton>Return home</GeneralButton>
-          </NuxtLink>
         </GeneralFlex>
       </GeneralBox>
     </Transition>

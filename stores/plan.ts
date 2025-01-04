@@ -7,10 +7,12 @@ interface planType {
 }
 
 export const usePlanStore = defineStore("plan", () => {
+  const { $f } = useNuxtApp();
+
   const plan = ref<planType>();
 
   async function fetchRate() {
-    const data = await f("/u");
+    const data = await $f("/u");
 
     if (data) {
       plan.value = data.plan;

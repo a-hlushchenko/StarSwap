@@ -21,7 +21,7 @@ function disconnectWallet() {
 <template>
   <Transition name="popup">
     <GeneralPopup v-if="isActive" @close="$emit('close')">
-      <GeneralTitle>Your wallet</GeneralTitle>
+      <GeneralTitle>{{ $t("wallet.title") }}</GeneralTitle>
       <GeneralFlex column>
         <div class="block">
           <div class="icon">
@@ -37,7 +37,7 @@ function disconnectWallet() {
         </div>
 
         <GeneralButton @click="disconnectWallet">
-          Connect different wallet
+          {{ $t("wallet.disconnect_wallet") }}
         </GeneralButton>
       </GeneralFlex>
     </GeneralPopup>

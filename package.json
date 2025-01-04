@@ -13,6 +13,7 @@
     "@lottiefiles/dotlottie-vue": "^0.4.16",
     "@nuxt/fonts": "^0.10.3",
     "@nuxt/image": "^1.8.1",
+    "@nuxtjs/i18n": "^9.1.1",
     "@pinia/nuxt": "^0.9.0",
     "@ton/core": "^0.59.0",
     "@tonconnect/ui": "^2.0.6",

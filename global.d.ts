@@ -11,8 +11,6 @@ declare global {
     f: (url: string, options?: any) => Promise<any>;
   }
 
-  var f: Global["f"];
-
   interface WebApp {
     initData: string;
     initDataUnsafe: any;

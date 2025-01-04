@@ -7,10 +7,12 @@ interface tokenType {
 }
 
 export const useTokenStore = defineStore("token", () => {
+  const { $f } = useNuxtApp();
+
   const token = ref<tokenType>();
 
   async function fetchTokenHandler() {
-    const data = await f("/t");
+    const data = await $f("/t");
 
     if (data) {
       token.value = data.token;

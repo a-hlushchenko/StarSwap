@@ -5,10 +5,13 @@ const props = defineProps<{
   swapAmount: string | null;
 }>();
 
+const { t } = useI18n();
+
 const emit = defineEmits(["tooglePopup"]);
 import { useWebAppHapticFeedback, useWebAppNavigation } from "vue-tg";
 
 const router = useRouter();
+const { $f } = useNuxtApp();
 
 const { openInvoice } = useWebAppNavigation();
 const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
@@ -30,7 +33,7 @@ function closePopup() {
 async function createSwap() {
   isSwapLoading.value = true;
 
-  const data = await f("/s", {
+  const data = await $f("/s", {
     method: "POST",
     body: JSON.stringify({
       to_token_id: 1,
@@ -79,23 +82,23 @@ async function confirm() {
 
 <template>
   <GeneralPopup @close="closePopup">
-    <GeneralTitle>Confirmation</GeneralTitle>
+    <GeneralTitle>{{ $t("confirm.title") }}</GeneralTitle>
     <GeneralFlex column>
-      <GeneralField label="You send">
+      <GeneralField :label="$t('confirm.send_text')">
         <IconsStar width="20" />
         <div>
           {{ swapAmount }}
         </div>
       </GeneralField>
 
-      <GeneralField label="You receive">
+      <GeneralField :label="$t('confirm.receive_text')">
         <IconsUsdt width="20" height="20" />
         <div>
           {{ usdt }}
         </div>
       </GeneralField>
 
-      <GeneralField label="To">
+      <GeneralField :label="$t('confirm.to_text')">
         <IconsWallet width="20" style="flex-shrink: 0" />
         <div class="address">
           {{ wallet.address }}
@@ -104,7 +107,7 @@ async function confirm() {
 
       <GeneralButton type="button" @click="confirm">
         <GeneralLoader v-if="isSwapLoading" />
-        <span v-else>Confirm</span>
+        <span v-else>{{ $t("confirm.button_text") }}</span>
       </GeneralButton>
     </GeneralFlex>
   </GeneralPopup>

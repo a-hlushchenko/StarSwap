@@ -11,7 +11,8 @@
   text-align: center;
   font-size: 0.9rem;
 
-  span {
+  span,
+  b {
     font-weight: 700;
   }
 }
