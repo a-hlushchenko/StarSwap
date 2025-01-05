@@ -71,7 +71,7 @@ function setupWallet() {
 }
 
 onMounted(async () => {
-  if (!initData) return;
+  if (!initData && import.meta.env.VITE_NODE_ENV !== "dev") return;
 
   window.Telegram.WebApp.lockOrientation();
   window.Telegram.WebApp.disableVerticalSwipes();

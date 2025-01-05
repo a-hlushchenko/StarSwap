@@ -30,9 +30,9 @@ export default defineNuxtConfig({
   i18n: {
     lazy: true,
     locales: [
-      { code: "en", name: "English", file: "en.ts" },
-      { code: "uk", name: "Ukrainian", file: "uk.ts" },
-      { code: "ru", name: "Russian", file: "ru.ts" },
+      { code: "en", name: "English", file: "i18n.ts" },
+      { code: "uk", name: "Ukrainian", file: "i18n.ts" },
+      { code: "ru", name: "Russian", file: "i18n.ts" },
     ],
     defaultLocale: "en",
     strategy: "no_prefix",
