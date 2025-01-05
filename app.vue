@@ -12,7 +12,7 @@ import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 
 const { locales, setLocale, getLocaleCookie } = useI18n();
 
-const { platform, initDataUnsafe } = useWebApp();
+const { platform, initDataUnsafe, initData } = useWebApp();
 const { showSettingsButton } = useWebAppSettingsButton();
 const { impactOccurred } = useWebAppHapticFeedback();
 
@@ -52,7 +52,7 @@ function setupLang() {
 function setupWallet() {
   wallet.value.connector = new TonConnectUI({
     manifestUrl:
-      "https://raw.githubusercontent.com/StarSwap-bot/assets/refs/heads/main/manifest.json",
+      "https://raw.githubusercontent.com/theStarSwap/data/refs/heads/main/manifest.json",
     widgetRootId: "app",
   });
 
@@ -71,6 +71,8 @@ function setupWallet() {
 }
 
 onMounted(async () => {
+  if (!initData) return;
+
   window.Telegram.WebApp.lockOrientation();
   window.Telegram.WebApp.disableVerticalSwipes();
 

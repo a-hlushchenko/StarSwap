@@ -23,11 +23,9 @@ const invoiceUrl = ref<string>("");
 const swapId = ref<number>();
 
 const isSwapLoading = ref(false);
-const isCancelled = ref(false);
 
 function closePopup() {
   emit("tooglePopup", false);
-  isCancelled.value = false;
 }
 
 async function createSwap() {
@@ -56,11 +54,7 @@ const invoiceHandler = (status: string) => {
       notificationOccurred("success");
       router.push(`/swap/${swapId.value}`);
       break;
-    case "cancelled":
-      notificationOccurred("error");
-      isCancelled.value = true;
-      emit("tooglePopup", true);
-      break;
+
     case "failed":
       notificationStore.showMessage("Payment failed", NotificationType.error);
       break;
@@ -70,7 +64,7 @@ const invoiceHandler = (status: string) => {
 async function confirm() {
   if (isSwapLoading.value) return;
 
-  if (!isCancelled.value) await createSwap();
+  await createSwap();
 
   emit("tooglePopup", false);
 
