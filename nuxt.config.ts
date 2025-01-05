@@ -36,6 +36,7 @@ export default defineNuxtConfig({
       { code: "ar", name: "Arabic", file: "ar.ts" },
     ],
     defaultLocale: "en",
+    strategy: "no_prefix",
   },
 
   modules: ["@nuxt/fonts", "@pinia/nuxt", "@nuxtjs/i18n"],
