@@ -9,6 +9,8 @@ interface planType {
 export const usePlanStore = defineStore("plan", () => {
   const { $f } = useNuxtApp();
 
+  const { isError } = storeToRefs(useLoaderStore());
+
   const plan = ref<planType>();
 
   async function fetchRate() {
@@ -16,6 +18,8 @@ export const usePlanStore = defineStore("plan", () => {
 
     if (data) {
       plan.value = data.plan;
+    } else {
+      isError.value = true;
     }
   }
 

@@ -45,6 +45,7 @@ const notificationStore = useNotificationStore();
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  z-index: 11;
 
   &.error {
     border-color: var(--error);

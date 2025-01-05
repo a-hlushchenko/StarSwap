@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const { isLoader } = storeToRefs(useLoaderStore());
+const { isLoader, isError } = storeToRefs(useLoaderStore());
 const { isSettings, isWallet } = storeToRefs(useSettingsStore());
 </script>
 
 <template>
   <Transition name="loader">
-    <MainLoader v-if="isLoader" />
+    <MainLoader v-if="isLoader || isError" />
   </Transition>
 
   <Transition name="settings">

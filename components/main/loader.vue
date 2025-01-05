@@ -16,6 +16,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
+  z-index: 10;
 }
 
 .icon {
