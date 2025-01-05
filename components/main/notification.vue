@@ -60,6 +60,7 @@ const notificationStore = useNotificationStore();
   justify-content: center;
   width: 32px;
   height: 32px;
+  flex-shrink: 0;
 }
 
 .notification-enter-from,

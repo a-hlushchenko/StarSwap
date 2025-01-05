@@ -40,6 +40,17 @@ const isDisabled = computed(
     !wallet.value.address
 );
 
+const filterInput = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const value = input.value;
+
+  const filteredValue = value.replace(/[^0-9]/g, "");
+
+  if (filteredValue !== value) {
+    input.value = filteredValue;
+  }
+};
+
 function toggleConfirmPopup(state: boolean) {
   impactOccurred("medium");
   isConfirmPopup.value = state;
@@ -114,6 +125,7 @@ async function swap() {
               "
               :label="$t('form.stars_title')"
               isInput
+              @input="filterInput"
               :error="starsError"
               @focusout="validateForm"
             >
