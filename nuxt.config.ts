@@ -31,15 +31,11 @@ export default defineNuxtConfig({
     lazy: true,
     locales: [
       { code: "en", name: "English", file: "en.ts" },
-      { code: "uk", name: "Українська", file: "uk.ts" },
+      { code: "uk", name: "Ukrainian", file: "uk.ts" },
+      { code: "ru", name: "Russian", file: "ru.ts" },
+      { code: "ar", name: "Arabic", file: "ar.ts" },
     ],
     defaultLocale: "en",
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: "i18n_redirected",
-      alwaysRedirect: false,
-      fallbackLocale: null,
-    },
   },
 
   modules: ["@nuxt/fonts", "@pinia/nuxt", "@nuxtjs/i18n"],

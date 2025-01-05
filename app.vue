@@ -34,18 +34,14 @@ function setupSettings() {
 }
 
 function setupLang() {
-  const languageCookie = getLocaleCookie();
-  const userLangCode = initDataUnsafe.user?.language_code;
+  const userLangCode = initDataUnsafe.user?.language_code || "uk";
 
-  console.log("lang cookie", languageCookie);
-  console.log("user lang", userLangCode);
+  const userSetLang = useCookie("user_set_lang");
 
-  if (!languageCookie && userLangCode) {
+  if (!userSetLang.value && userLangCode) {
     const availableLocale = locales.value.find(
       (locale) => locale.code === userLangCode
     );
-
-    console.log("available", availableLocale);
 
     if (availableLocale) {
       setLocale(availableLocale.code);

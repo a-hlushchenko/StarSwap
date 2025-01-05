@@ -36,6 +36,8 @@ function changeLang(locale: LocaleObject) {
   close();
 
   setLocale(locale.code);
+  const userSetLang = useCookie<boolean>("user_set_lang");
+  userSetLang.value = true;
 }
 </script>
 
