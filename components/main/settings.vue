@@ -59,11 +59,11 @@ function changeLang(locale: LocaleObject) {
           <GeneralTitle mini v-if="isLangs">Languages</GeneralTitle>
 
           <div>
-            <template v-for="locale in locales">
+            <template v-for="(locale, index) in locales">
               <button class="settings-item" @click="changeLang(locale)">
                 {{ locale.name }}
               </button>
-              <GeneralDivider />
+              <GeneralDivider v-if="index !== locales.length - 1" />
             </template>
           </div>
 
