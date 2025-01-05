@@ -35,7 +35,7 @@ async function fetchSwapHandler() {
 async function fetchSwap() {
   await fetchSwapHandler();
 
-  intervalId.value = setInterval(fetchSwapHandler, 5000);
+  intervalId.value = setInterval(fetchSwapHandler, 1000);
 }
 
 onMounted(() => {
