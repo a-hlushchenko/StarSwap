@@ -34,6 +34,12 @@ export default defineNuxtConfig({
       { code: "uk", name: "Українська", file: "uk.ts" },
     ],
     defaultLocale: "en",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      alwaysRedirect: false,
+      fallbackLocale: null,
+    },
   },
 
   modules: ["@nuxt/fonts", "@pinia/nuxt", "@nuxtjs/i18n"],
