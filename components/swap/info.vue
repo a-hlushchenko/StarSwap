@@ -2,17 +2,17 @@
 import { useWebAppNavigation, useWebAppPopup } from "vue-tg";
 
 const { openTelegramLink } = useWebAppNavigation();
+
+const { t } = useI18n();
 </script>
 
 <template>
   <div class="info-wrapper">
     <h1 class="h1">{{ $t("header.title") }}</h1>
     <GeneralText>
-      Connect your wallet and <span>swap Telegram Stars to USD₮</span>. Send
-      your Stars via purchasing in MiniApp and get your USD₮
-      <span>immediately. </span>
+      <p style="display: inline" v-html="t('header.text') + ' '"></p>
       <GeneralMore @click="openTelegramLink('https://t.me/thestarswap')">
-        Learn more
+        {{ $t("header.learn_more") }}
       </GeneralMore>
     </GeneralText>
   </div>

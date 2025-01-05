@@ -10,9 +10,10 @@ import { useWalletStore } from "./stores/wallet";
 import { storeToRefs } from "pinia";
 import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 
-const { platform } = useWebApp();
-const { onSettingsButtonClicked, showSettingsButton } =
-  useWebAppSettingsButton();
+const { locales, setLocale, getLocaleCookie } = useI18n();
+
+const { platform, initDataUnsafe } = useWebApp();
+const { showSettingsButton } = useWebAppSettingsButton();
 const { impactOccurred } = useWebAppHapticFeedback();
 
 const { wallet } = storeToRefs(useWalletStore());
@@ -20,24 +21,34 @@ const planStore = usePlanStore();
 const tokenStore = useTokenStore();
 const { isLoader } = storeToRefs(useLoaderStore());
 const { isSettings } = storeToRefs(useSettingsStore());
-const notificationStore = useNotificationStore();
 
 const unsubscribeModal = ref();
 
-onMounted(async () => {
-  window.Telegram.WebApp.lockOrientation();
-  window.Telegram.WebApp.disableVerticalSwipes();
-  if (["ios", "android"].includes(platform)) {
-    window.Telegram.WebApp.requestFullscreen();
-  }
-
+function setupSettings() {
   Telegram.WebApp.onEvent("settingsButtonClicked", () => {
     impactOccurred("medium");
     isSettings.value = true;
   });
 
   showSettingsButton();
+}
 
+async function setupLang() {
+  const languageCookie = getLocaleCookie();
+  const userLangCode = initDataUnsafe.user?.language_code;
+
+  if (!languageCookie && userLangCode) {
+    const availableLocale = locales.value.find(
+      (locale) => locale.code === userLangCode
+    );
+
+    if (availableLocale) {
+      setLocale(availableLocale.code);
+    }
+  }
+}
+
+function setupWallet() {
   wallet.value.connector = new TonConnectUI({
     manifestUrl:
       "https://raw.githubusercontent.com/StarSwap-bot/assets/refs/heads/main/manifest.json",
@@ -56,6 +67,19 @@ onMounted(async () => {
       }
     }
   );
+}
+
+onMounted(async () => {
+  window.Telegram.WebApp.lockOrientation();
+  window.Telegram.WebApp.disableVerticalSwipes();
+
+  if (["ios", "android"].includes(platform)) {
+    window.Telegram.WebApp.requestFullscreen();
+  }
+
+  setupSettings();
+  setupLang();
+  setupWallet();
 
   await planStore.fetchRate();
   await tokenStore.fetchToken();

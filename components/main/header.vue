@@ -4,28 +4,17 @@ import { useWebAppHapticFeedback } from "vue-tg";
 const { impactOccurred } = useWebAppHapticFeedback();
 
 const { wallet } = storeToRefs(useWalletStore());
-
-const isWalletPopup = ref(false);
+const { isWallet } = storeToRefs(useSettingsStore());
 
 const formattedAddress = computed(() => {
   return wallet.value.address ? shortAddress(wallet.value.address) : "";
 });
 
-function openWalletPopup() {
-  impactOccurred("medium");
-  isWalletPopup.value = true;
-}
-
-function closeWalletPopup() {
-  impactOccurred("medium");
-  isWalletPopup.value = false;
-}
-
 function connect() {
   impactOccurred("medium");
 
   if (!wallet.value.address) wallet.value.connector.openModal();
-  else openWalletPopup();
+  else isWallet.value = true;
 }
 </script>
 
@@ -41,8 +30,6 @@ function connect() {
         {{ formattedAddress || $t("wallet.connect") }}
       </GeneralButton>
     </div>
-
-    <MainWalletPopup :isActive="isWalletPopup" @close="closeWalletPopup" />
   </header>
 </template>
 

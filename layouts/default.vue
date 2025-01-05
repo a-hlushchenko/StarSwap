@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { isLoader } = storeToRefs(useLoaderStore());
-const { isSettings } = storeToRefs(useSettingsStore());
+const { isSettings, isWallet } = storeToRefs(useSettingsStore());
 </script>
 
 <template>
@@ -9,7 +9,11 @@ const { isSettings } = storeToRefs(useSettingsStore());
   </Transition>
 
   <Transition name="settings">
-    <mainSettings v-if="isSettings" />
+    <MainSettings v-if="isSettings" />
+  </Transition>
+
+  <Transition name="popup">
+    <MainWalletPopup v-if="isWallet" />
   </Transition>
 
   <div class="app" id="app">

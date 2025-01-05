@@ -22,7 +22,10 @@ export default defineNuxtConfig({
 
   i18n: {
     lazy: true,
-    locales: [{ code: "en", file: "en.ts" }],
+    locales: [
+      { code: "en", name: "English", file: "en.ts" },
+      { code: "uk", name: "Українська", file: "uk.ts" },
+    ],
     defaultLocale: "en",
   },
 

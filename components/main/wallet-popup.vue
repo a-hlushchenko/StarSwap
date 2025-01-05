@@ -1,47 +1,44 @@
 <script setup lang="ts">
 import { useWebAppHapticFeedback } from "vue-tg";
 
-const props = defineProps<{
-  isActive: boolean;
-}>();
-
-const emit = defineEmits(["close"]);
-
 const { impactOccurred, notificationOccurred } = useWebAppHapticFeedback();
 
 const { wallet } = storeToRefs(useWalletStore());
+const { isWallet } = storeToRefs(useSettingsStore());
+
+function close() {
+  impactOccurred("medium");
+  isWallet.value = false;
+}
 
 function disconnectWallet() {
-  impactOccurred("medium");
-  emit("close");
+  close();
   wallet.value.connector.disconnect();
 }
 </script>
 
 <template>
-  <Transition name="popup">
-    <GeneralPopup v-if="isActive" @close="$emit('close')">
-      <GeneralTitle>{{ $t("wallet.title") }}</GeneralTitle>
-      <GeneralFlex column>
-        <div class="block">
-          <div class="icon">
-            <IconsWallet width="24" />
-          </div>
-
-          <GeneralFlex column gap="small">
-            <p class="address">
-              {{ shortAddress(wallet.address) }}
-            </p>
-            <span class="network">The Open Network</span>
-          </GeneralFlex>
+  <GeneralPopup @close="close">
+    <GeneralTitle>{{ $t("wallet.title") }}</GeneralTitle>
+    <GeneralFlex column>
+      <div class="block">
+        <div class="icon">
+          <IconsWallet width="24" />
         </div>
 
-        <GeneralButton @click="disconnectWallet">
-          {{ $t("wallet.disconnect_wallet") }}
-        </GeneralButton>
-      </GeneralFlex>
-    </GeneralPopup>
-  </Transition>
+        <GeneralFlex column gap="small">
+          <p class="address">
+            {{ shortAddress(wallet.address) }}
+          </p>
+          <span class="network">The Open Network</span>
+        </GeneralFlex>
+      </div>
+
+      <GeneralButton @click="disconnectWallet">
+        {{ $t("wallet.disconnect_wallet") }}
+      </GeneralButton>
+    </GeneralFlex>
+  </GeneralPopup>
 </template>
 
 <style scoped>

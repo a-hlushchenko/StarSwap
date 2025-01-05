@@ -1,12 +1,19 @@
 <script setup lang="ts">
+import type { LocaleObject } from "@nuxtjs/i18n";
 import { useWebAppHapticFeedback } from "vue-tg";
 
 const emit = defineEmits(["close"]);
 
+const { locales, setLocale } = useI18n();
+const router = useRouter();
+
 const { impactOccurred } = useWebAppHapticFeedback();
 
-const { isSettings } = storeToRefs(useSettingsStore());
+const { isSettings, isWallet } = storeToRefs(useSettingsStore());
 const notificationStore = useNotificationStore();
+
+const isLangs = ref(false);
+const isMainSettings = ref(true);
 
 function close() {
   impactOccurred("medium");
@@ -16,32 +23,53 @@ function close() {
 function openWallet() {
   impactOccurred("medium");
   close();
-
-  notificationStore.showMessage("test");
+  isWallet.value = true;
 }
 
 function openLangs() {
   impactOccurred("medium");
+  isLangs.value = true;
+  isMainSettings.value = false;
+}
+
+function changeLang(locale: LocaleObject) {
   close();
 
-  notificationStore.showMessage("test");
+  setLocale(locale.code);
 }
 </script>
 
 <template>
   <Transition name="popup">
     <div class="settings-wrapper" @click="close">
-      <GeneralBox class="settings">
-        <GeneralTitle mini>Settings</GeneralTitle>
+      <Transition name="settings-section" mode="out-in">
+        <GeneralBox class="settings" @click.stop v-if="isMainSettings">
+          <GeneralTitle mini>Settings</GeneralTitle>
 
-        <GeneralFlex column gap="mini">
-          <button class="settings-item" @click="openWallet">Wallet</button>
-          <GeneralDivider />
-          <button class="settings-item" @click="openLangs">Languages</button>
-        </GeneralFlex>
+          <div>
+            <button class="settings-item" @click="openWallet">Wallet</button>
+            <GeneralDivider />
+            <button class="settings-item" @click="openLangs">Languages</button>
+          </div>
 
-        <IconsClose @click.stop.prevent="close" />
-      </GeneralBox>
+          <IconsClose @click.stop.prevent="close" />
+        </GeneralBox>
+
+        <GeneralBox class="settings" @click.stop v-else-if="isLangs">
+          <GeneralTitle mini v-if="isLangs">Languages</GeneralTitle>
+
+          <div>
+            <template v-for="locale in locales">
+              <button class="settings-item" @click="changeLang(locale)">
+                {{ locale.name }}
+              </button>
+              <GeneralDivider />
+            </template>
+          </div>
+
+          <IconsClose @click.stop.prevent="close" />
+        </GeneralBox>
+      </Transition>
     </div>
   </Transition>
 </template>
@@ -71,6 +99,9 @@ function openLangs() {
 
 .settings-item {
   font-weight: 500;
+  width: 100%;
+  text-align: start;
+  padding: 8px 0;
   align-self: self-start;
 }
 
@@ -83,5 +114,11 @@ function openLangs() {
 .settings-leave-to .settings {
   opacity: 0;
   transform: translate(25%, -25%) scale(0.5);
+}
+
+.settings-section-enter-from,
+.settings-section-leave-to {
+  opacity: 0;
+  transform: translate(12.5%, -12.5%) scale(0.75);
 }
 </style>
