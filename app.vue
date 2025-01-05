@@ -33,14 +33,19 @@ function setupSettings() {
   showSettingsButton();
 }
 
-async function setupLang() {
+function setupLang() {
   const languageCookie = getLocaleCookie();
   const userLangCode = initDataUnsafe.user?.language_code;
+
+  console.log("lang cookie", languageCookie);
+  console.log("user lang", userLangCode);
 
   if (!languageCookie && userLangCode) {
     const availableLocale = locales.value.find(
       (locale) => locale.code === userLangCode
     );
+
+    console.log("available", availableLocale);
 
     if (availableLocale) {
       setLocale(availableLocale.code);
