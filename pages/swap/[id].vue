@@ -58,7 +58,7 @@ onUnmounted(() => {
             src="/img/swap/success.json"
           />
           <GeneralTitle mini>Transaction completed!</GeneralTitle>
-          <GeneralText>
+          <GeneralText center>
             {{ swap.result_amount }} USD₮ were successfully sent to your wallet.
             You can view your transaction on the
             <GeneralMore
@@ -84,7 +84,7 @@ onUnmounted(() => {
             src="/img/swap/error.json"
           />
           <GeneralTitle mini>Transaction failed!</GeneralTitle>
-          <GeneralText>
+          <GeneralText center>
             Something went wrong! Please, try again later.
           </GeneralText>
 
@@ -103,7 +103,7 @@ onUnmounted(() => {
             src="/img/swap/swapping.json"
           />
           <GeneralTitle mini>Swapping Stars to USD₮...</GeneralTitle>
-          <GeneralText>
+          <GeneralText center>
             The token will be send to your wallet as soon as the transaction is
             successfully recorded in the blockchain.
           </GeneralText>

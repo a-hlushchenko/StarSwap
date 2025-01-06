@@ -37,6 +37,8 @@ function connect() {
 .header-wrapper {
   background-color: var(--secondary-bg);
   padding-top: var(--fullscreen);
+  position: sticky;
+  top: 0px;
 }
 
 .header {

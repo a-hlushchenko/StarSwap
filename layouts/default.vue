@@ -16,18 +16,18 @@ const { isSettings, isWallet } = storeToRefs(useSettingsStore());
     <MainWalletPopup v-if="isWallet" />
   </Transition>
 
-  <div class="app" id="app">
-    <MainHeader />
-    <MainNotification />
+  <MainNotification />
+
+  <MainHeader />
+  <div class="main">
     <slot></slot>
   </div>
+  <MainFooter />
 </template>
 
 <style scoped>
-.app {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.main {
+  padding: 1rem 0 4rem;
 }
 
 .loader-enter-from,

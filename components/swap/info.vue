@@ -9,7 +9,7 @@ const { t } = useI18n();
 <template>
   <div class="info-wrapper">
     <h1 class="h1">{{ $t("header.title") }}</h1>
-    <GeneralText>
+    <GeneralText center>
       <p style="display: inline" v-html="t('header.text') + ' '"></p>
       <GeneralMore @click="openTelegramLink('https://t.me/thestarswap')">
         {{ $t("header.learn_more") }}

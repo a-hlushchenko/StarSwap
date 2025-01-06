@@ -137,12 +137,17 @@ onMounted(async () => {
   --error: #ff5863;
 
   overscroll-behavior: none;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 ::selection {
   background-color: var(--main);
   color: var(--text);
+}
+
+html,
+#__nuxt {
+  height: 100%;
 }
 
 body {
@@ -153,6 +158,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text);
+  height: 100%;
 }
 
 .page-enter-active,
