@@ -27,7 +27,7 @@ const { isSettings, isWallet } = storeToRefs(useSettingsStore());
 
 <style scoped>
 .main {
-  padding: calc(--fullscreen + --header + 1rem) 0;
+  padding: calc(var(--fullscreen) + var(--header) + 1rem) 0;
   overflow: auto;
   height: 100%;
 }
