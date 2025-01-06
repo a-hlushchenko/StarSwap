@@ -102,18 +102,10 @@ onMounted(async () => {
   -webkit-tap-highlight-color: transparent;
 }
 
-::-webkit-scrollbar {
-  background-color: transparent;
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar,
+::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
-  background: var(--main);
-  border-radius: 20px;
+  display: none;
 }
 
 :root {
