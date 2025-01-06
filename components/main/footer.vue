@@ -23,6 +23,7 @@ const { openTelegramLink } = useWebAppNavigation();
   position: fixed;
   bottom: 0px;
   padding: 0.75rem;
+  padding-bottom: 1.5rem;
   background-color: #111417;
   width: 100%;
 }

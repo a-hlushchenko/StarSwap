@@ -27,7 +27,9 @@ const { isSettings, isWallet } = storeToRefs(useSettingsStore());
 
 <style scoped>
 .main {
-  padding: 1rem 0 4rem;
+  padding: 5rem 0;
+  overflow: auto;
+  height: 100%;
 }
 
 .loader-enter-from,

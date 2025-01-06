@@ -137,7 +137,7 @@ onMounted(async () => {
   --error: #ff5863;
 
   overscroll-behavior: none;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 ::selection {
