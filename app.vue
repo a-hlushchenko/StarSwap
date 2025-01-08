@@ -137,7 +137,11 @@ onMounted(async () => {
   color: var(--text);
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
 #__nuxt {
   height: 100%;
 }
@@ -149,6 +153,7 @@ body {
   line-height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
   color: var(--text);
   height: 100%;
 }

@@ -50,6 +50,8 @@ const model = defineModel();
 
 .input {
   width: 100%;
+  position: relative;
+  z-index: 1;
 
   &.disabled,
   &::placeholder {

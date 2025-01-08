@@ -106,7 +106,7 @@ async function swap() {
   <GeneralContainer>
     <SwapInfo />
 
-    <form @submit.prevent>
+    <form @submit.prevent class="form">
       <GeneralFlex column>
         <GeneralBox>
           <GeneralFlex column class="fields-box">
@@ -164,5 +164,9 @@ async function swap() {
 <style scoped>
 .disabled {
   color: var(--secondary-text);
+}
+
+.form {
+  overflow: auto;
 }
 </style>

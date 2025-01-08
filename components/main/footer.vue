@@ -13,6 +13,12 @@ const { openTelegramLink } = useWebAppNavigation();
       >
         Channel
       </button>
+      <button
+        class="footer-item"
+        @click="openTelegramLink('https://t.me/StarSwap_Support')"
+      >
+        Support
+      </button>
       <NuxtLink class="footer-item" to="/terms">Terms & Privacy</NuxtLink>
     </GeneralFlex>
   </div>
