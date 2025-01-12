@@ -10,6 +10,7 @@ import { useWalletStore } from "./stores/wallet";
 import { storeToRefs } from "pinia";
 import { TonConnectUI, toUserFriendlyAddress } from "@tonconnect/ui";
 
+const router = useRouter();
 const { locales, setLocale, getLocaleCookie } = useI18n();
 
 const { platform, initDataUnsafe, initData } = useWebApp();
@@ -75,6 +76,10 @@ onMounted(async () => {
 
   window.Telegram.WebApp.lockOrientation();
   window.Telegram.WebApp.disableVerticalSwipes();
+  Telegram.WebApp.onEvent("backButtonClicked", () => {
+    impactOccurred("light");
+    router.back();
+  });
 
   if (["ios", "android"].includes(platform)) {
     window.Telegram.WebApp.requestFullscreen();
@@ -84,8 +89,7 @@ onMounted(async () => {
   setupLang();
   setupWallet();
 
-  await planStore.fetchRate();
-  await tokenStore.fetchToken();
+  await Promise.all([planStore.fetchRate(), tokenStore.fetchToken()]);
 
   isLoader.value = false;
 });

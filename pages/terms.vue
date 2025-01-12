@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { useWebAppBackButton, useWebAppHapticFeedback } from "vue-tg";
-const router = useRouter();
 
-const { showBackButton } = useWebAppBackButton();
-const { impactOccurred } = useWebAppHapticFeedback();
-
-const backDefaultCallback = () => {
-  impactOccurred("light");
-  router.back();
-};
+const { showBackButton, hideBackButton } = useWebAppBackButton();
 
 onMounted(() => {
-  Telegram.WebApp.onEvent("backButtonClicked", backDefaultCallback);
   showBackButton();
+});
+onUnmounted(() => {
+  hideBackButton();
 });
 </script>
 <template>
